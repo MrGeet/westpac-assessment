@@ -1,6 +1,7 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+You should have the latest version of Node installed.
 
 After you clone the repository:
 
@@ -45,8 +46,8 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## Project images
+![image](https://github.com/MrGeet/westpac-assessment/assets/48781163/b196bd5e-51c0-4dad-a009-c8074cfc1ba2)
+![image](https://github.com/MrGeet/westpac-assessment/assets/48781163/3f0556f8-91d1-4e0f-a306-c979d8c86c74)
+![image](https://github.com/MrGeet/westpac-assessment/assets/48781163/7e7ccfc5-a483-4ebf-a18d-06019199e527)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
