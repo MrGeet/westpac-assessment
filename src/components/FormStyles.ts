@@ -81,3 +81,38 @@ export const Label = styled.label`
   color: darkgray;
   font-size: 14px;
 `;
+
+export const FormValidationWrapper = styled.div`
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  transform: translateY(-20px);
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  &.active {
+    transform: translateY(0);
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    position: relative;
+  }
+
+  > div {
+    display: flex;
+    align-items: center;
+    transition: color 0.4s ease-in-out;
+  }
+
+  > .correct {
+    color: limegreen;
+  }
+
+  > .incorrect {
+    color: red;
+  }
+  > .default {
+    color: #2f2f2f;
+  }
+`;
