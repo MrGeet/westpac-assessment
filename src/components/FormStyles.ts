@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Container } from './../globalStyles';
+import { Container, Column } from './../globalStyles';
 
 export const FormCard = styled(Container)`
   display: flex;
@@ -114,5 +114,19 @@ export const FormValidationWrapper = styled.div`
   }
   > .default {
     color: #2f2f2f;
+  }
+`;
+export const SuccessMessage = styled(Column)`
+  visibility: hidden;
+  position: absolute;
+  opacity: 0;
+  transform: translateY(-50px);
+  transition: transform 0.4s ease-in-out, opacity 0.3s ease-in-out;
+  align-items: center;
+  &.show {
+    position: static;
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0px);
   }
 `;

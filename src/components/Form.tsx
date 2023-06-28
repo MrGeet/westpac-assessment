@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { FormCard, FormValidationWrapper, FormWrapper, Input, Label } from './FormStyles';
+import React, { useEffect, useState, useMemo } from 'react';
+import { FormCard, FormValidationWrapper, FormWrapper, Input, Label, SuccessMessage } from './FormStyles';
 import { hasNumber, hasTwoSpecialCharacters } from '../helpers/passwordHelper';
 import { IoCheckmarkSharp, IoClose } from 'react-icons/io5';
 import { Column, Typography } from '../globalStyles';
+import { BsFillCheckCircleFill } from 'react-icons/bs';
 /**
  *
  * TODO:
@@ -34,7 +35,17 @@ export const Form = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordValidation, setPasswordValidation] = useState<IPasswordValidation>(initialValidation);
   const [confirmValidation, setConfirmValidation] = useState<ValidationType>('default');
+  const [isReset, setIsReset] = useState(false);
 
+  const isFormValid = useMemo(() => {
+    if (confirmValidation !== 'correct') return false;
+
+    const { minChar, numberChar, overChar, specialChar } = passwordValidation;
+    if (minChar.valid === 'correct' && numberChar.valid === 'correct' && specialChar.valid === 'correct') return true;
+    if (overChar.valid === 'correct') return true;
+
+    return false;
+  }, [confirmValidation, passwordValidation]);
   useEffect(() => {
     if (password === '') {
       setPasswordValidation(initialValidation);
@@ -59,52 +70,67 @@ export const Form = () => {
     if (confirmPassword === password) return setConfirmValidation('correct');
     setConfirmValidation('incorrect');
   }, [confirmPassword, password]);
-
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('Password was reset');
+    setIsReset(true);
+  };
   return (
     <FormCard>
       <img src="assets/westpac.svg" alt="" />
-      <FormWrapper>
-        <Typography textAlign="center" as="h2" fontSize="28px" mt="2rem" mb="2rem">
-          Reset Password
-        </Typography>
-        <Column>
-          <Label htmlFor="password">Password</Label>
-          <Input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-          />
-          <FormValidationWrapper className={password.length > 0 ? 'active' : ''}>
-            {Object.values(passwordValidation).map(({ valid, name }, index) => (
-              <div className={`${valid}`} key={index}>
-                {valid === 'correct' && <IoCheckmarkSharp size={14} aria-label="correct" />}
-                {valid === 'incorrect' && <IoClose size={14} aria-label="incorrect" />}
-                {name}
+      {!isReset && (
+        <FormWrapper onSubmit={onSubmit}>
+          <Typography textAlign="center" as="h2" fontSize="28px" mt="2rem" mb="2rem">
+            Reset Password
+          </Typography>
+          <Column>
+            <Label htmlFor="password">Password</Label>
+            <Input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            />
+            <FormValidationWrapper className={password.length > 0 ? 'active' : ''}>
+              {Object.values(passwordValidation).map(({ valid, name }, index) => (
+                <div className={`${valid}`} key={index}>
+                  {valid === 'correct' && <IoCheckmarkSharp size={14} aria-label="correct" />}
+                  {valid === 'incorrect' && <IoClose size={14} aria-label="incorrect" />}
+                  {name}
+                </div>
+              ))}
+            </FormValidationWrapper>
+          </Column>
+
+          <Column mt="1.2rem">
+            <Label htmlFor="confirmPassword">Confirm password</Label>
+            <Input
+              type="password"
+              id="confirmPassword"
+              value={confirmPassword}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
+            />
+            <FormValidationWrapper className={confirmPassword.length > 0 ? 'active' : ''}>
+              <div className={confirmValidation}>
+                {confirmValidation === 'correct' && <IoCheckmarkSharp size={14} />}
+                {confirmValidation === 'incorrect' && <IoClose size={14} />}
+                Passwords should match
               </div>
-            ))}
-          </FormValidationWrapper>
-        </Column>
+            </FormValidationWrapper>
+          </Column>
 
-        <Column mt="1.2rem">
-          <Label htmlFor="confirmPassword">Confirm password</Label>
-          <Input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
-          />
-          <FormValidationWrapper className={confirmPassword.length > 0 ? 'active' : ''}>
-            <div className={confirmValidation}>
-              {confirmValidation === 'correct' && <IoCheckmarkSharp size={14} />}
-              {confirmValidation === 'incorrect' && <IoClose size={14} />}
-              Passwords should match
-            </div>
-          </FormValidationWrapper>
-        </Column>
+          <button disabled={!isFormValid} type="submit">
+            Reset
+          </button>
+        </FormWrapper>
+      )}
 
-        <button type="submit">Reset</button>
-      </FormWrapper>
+      <SuccessMessage className={isReset ? 'show' : ''}>
+        <Typography textAlign="center" as="h2" fontSize="28px" mt="2rem" mb="2rem">
+          Password was reset successfully
+        </Typography>
+        <BsFillCheckCircleFill size={100} color="green" />
+      </SuccessMessage>
     </FormCard>
   );
 };
